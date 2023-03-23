@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Button from './week3/like_button';
 import reportWebVitals from './reportWebVitals';
+
+import Button from './week3/like_button';
+import library from "./week4/Library";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/*<App />*/}
     <Button />
+      <library />
   </React.StrictMode>
 );
 
