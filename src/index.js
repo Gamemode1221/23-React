@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-// import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// import Button from './week3/like_button';
-// import library from "./week4/Library";
-import Clock from './/week5/Clock';
+import NotificationList from "./week6/NotificationList";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <Clock />
+      <NotificationList />
   </React.StrictMode>
 );
 

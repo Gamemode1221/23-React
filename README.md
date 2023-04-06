@@ -5,11 +5,117 @@
 
 ### 강의 목록 
 ###### ※ 본 강의 목록은 *내림차순*으로 정렬되어있음.
-1. [5주차](#5주차)
-2. [4주차](#4주차)
-3. [3주차](#3주차)
-4. [2주차](#2주차)
-5. [1주차](#1주차)
+1. [6주차](#6주차)
+2. [5주차](#5주차)
+3. [4주차](#4주차)
+4. [3주차](#3주차)
+5. [2주차](#2주차)
+6. [1주차](#1주차)
+
+---
+
+## 6주차
+### 2023.04.06 목요일
+### 강의
+##### 컴포넌트 추출
+- 복잡한 컴포넌트를 쪼갯 여러 개의 컴포넌트로 나눌 수도 있음.
+- 큰 컴포넌트에서 일부를 추출해서 새로운 컴포넌트를 만드는 것.
+- 실무에서는 처음부터 1개의 컴포넌트에 하나의 기능만 사용하도록 설계하는 것이 좋음.
+```js
+function Avatar(props) {
+    return (
+        <img className="avatar"
+             src={props.user.avatarUrl}
+             alt={props.user.name}
+        />
+    );
+}
+
+function Comment(props) {
+    return (
+        <div className="comment">
+            <div className="user-info">
+                <Avatar user={props.author} />
+                <div className="user-info-name">
+                    {props.author.name}
+                </div>
+            </div>
+
+            <div className="comment-text">
+                {props.text}
+            </div>
+
+            <div className="comment-date">
+                {formatDate(props.date)}
+            </div>
+        </div>
+    );
+}
+```
+- Comment는 댓글 표시 컴포넌트.
+- 내부에는 이미지, 이름, 댓글과 작성일이 포함됨.
+- 첫 번째 이미지 부분을 Avatar 컴포넌트로 출력해봄.
+```js
+function Comment(props) {
+    return (
+    <div className="comment">
+        <UserInfo user={props.author} />
+        <div className="comment-text">
+            {props.text}
+        </div>
+        <div className="comment-date">
+            {formatDate(props.date)}
+        </div>
+    </div>
+);
+}
+```
+- 추출 후 다시 결합한 UserInfo를 Comment 컴포넌트 반영하면 다음과 같은 모습이 됨.
+- 처음에 비해서 가독성이 높아진 것을 확인할 수 있음.
+```js
+function UserInfo(props) {
+    return (
+        <div className="user-info">
+            <Avatar user={props.user} />
+            <div className="usr-info-name">
+                {props.user.name}
+            </div>
+        </div>
+    );     
+}
+```
+##### State란?
+- state는 리액트 컴포넌트의 상태를 의미함.
+- 상태의 의미는 정상인지 비정상인지가 아니라 컴포넌트의 데이터를 의미함.
+- 정확히는 컴포넌트의 변경가능한데이터를 의미함.
+- State가 변하면 다시 렌더링이 되기 때문에 렌더링과 관련된 값만 state에 포함시켜야 함.
+##### State의 특징
+- 리액트 만의 특별한 형태가 아닌 단지 자바스크립트 객체일 뿐.
+- 예의 LikeButton은 class 컴포넌트임.
+- constructor는 생성자이고 그 안에 있는 this.state가 현 컴포넌트의 state임.
+```js
+class LikeButton extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            liked: false
+        };
+    };
+}
+```
+※ *함수형에서는 userState()라는 함수를 사용함.*  
+##### 생명주기에 대해 알아보기
+- 생명주기는 컴포넌트의 생성 시점, 사용 시점, 종료 시점을 나타내는 것.
+- constructor가 실행되면서 컴포넌트가 생성됨.
+- 생성 직후 componentDidMount() 함수가 호출됨.
+- 컴포넌트가 소멸하기 전까지 여러 번 렌더링 함.
+- 렌더링은 props, setState(), forceUpdate()에 의해 상태가 변경되면 이루어짐.
+- 그리고 렌더링이 끝나면 componentDinUpdate() 함수가 호출됨.
+- 마지막으로 컴포넌트가 언마운트 되면 componentWillUnmount() 함수가 호출됨.
+### 실습
+Comment, CommentList 작성
+
 
 ---
 
