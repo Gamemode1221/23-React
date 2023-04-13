@@ -38,9 +38,9 @@ class NotificationList extends React.Component {
                 });
             } else {
                 // 주석처리하여 출력이 지워지지 않음
-                // this.setState({
-                //     notifications: [],
-                // });
+                this.setState({
+                    notifications: [],
+                });
                 clearInterval(timer);
             }
         }, 1000);
@@ -54,7 +54,11 @@ class NotificationList extends React.Component {
         return (
             <div>
                 {this.state.notifications.map((notification) => {
-                    return <Notification message={notification.message} />;
+                    return <Notification
+                        key={notification.id}
+                        id={notification.id}
+                        message={notification.message}
+                    />;
                 })}
             </div>
         );
