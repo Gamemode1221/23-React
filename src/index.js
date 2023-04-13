@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-import NotificationList from "./week6/NotificationList";
+import Accommodate from "./week7/Accommodate";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <NotificationList />
+      <Accommodate />
   </React.StrictMode>
 );
 
