@@ -5,14 +5,15 @@
 
 ### 강의 목록
 ###### ※ 본 강의 목록은 *내림차순*으로 정렬되어있음.
-1. [9주차](#9주차)
-2. [7주차](#7주차)
-3. [6주차](#6주차)
-4. [5주차](#5주차)
-5. [4주차](#4주차)
-6. [3주차](#3주차)
-7. [2주차](#2주차)
-8. [1주차](#1주차)
+1. [10주차](#10주차)
+2. [9주차](#9주차)
+3. [7주차](#7주차)
+4. [6주차](#6주차)
+5. [5주차](#5주차)
+6. [4주차](#4주차)
+7. [3주차](#3주차)
+8. [2주차](#2주차)
+9. [1주차](#1주차)
 
 ---
 
@@ -26,11 +27,11 @@
 
 ##### 여러 개의 컴포넌트 렌더링하기
 > ┌───┬───┬───┬───┐  
-│&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│  
-└───┴───┴───┴───┘  
-┌───────┬───────┐  
-│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; B &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   B   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│  
-└───────┴───────┘
+> │&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│  
+> └───┴───┴───┴───┘  
+> ┌───────┬───────┐  
+> │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; B &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; B &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│  
+> └───────┴───────┘
 - 위처럼 같은 컴포넌트를 화면에 반복적으로 나타내야 할 경우 배열에 들어있는 엘리먼트를 map() 함수를 이용하여 렌더링함.
 - 다음은 numbers 배열이 들어있는 각각의 요소를 map()을 이용하여 하나씩 추출하여, 2를 곱한 후 doubled라는 배열에 다시 넣는 코드.
 ```jsx
@@ -87,11 +88,342 @@ ReactDOM.render(
 - 이 키는 리스트에서 어떤 아이템이 변경, 추가 또는 제거되었는지 구분하기 위해 사용함.
 - 키는 같은 리스트에 있는 엘리먼트 사이에서만 고유한 값이면 됨.
 
-##### 
+##### 폼이란 무엇인가?
+- 폼은 일반적으로 사용자로부터 입력을 받기위한 양식에서 많이 사용됨.
+```html
+<form>
+    <label>
+        이름 : 
+        <input type="text" name="name" />
+    </label>
+    <button type="submit">제출</button>
+</form>
+```
+
+##### 제어 컴포넌트
+- 제어 컴포넌트는 사용자가 입력한 값에 접근하고 제어할 수 있도록 해주는 컴포넌트임.
+- 다음 코드는 사용자의 이름을 입력 받는 HTML폼을 리액트 제어 컴포넌트로 만든 것.
+```jsx
+function NameForm(props) {
+    const [value, setValue] = useState('');
+
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    };
+    
+    const handleSubmit = (event) => {
+        alert('입력한 이름 : ' + value);
+        event.preventDefault();
+    };
+    
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+                이름 : 
+                <input type="text" value={value} onChange={handleChange} />
+            </label>
+            <button type="submit">제출</button>
+        </form>
+    )
+}
+```
+##### textarea 태그
+- HTML에서는 \<textarea>의 children으로 텍스트가 들어가는 형태임.
+```html
+<textarea>  
+    안녕하세요, 여기에 이렇게 텍스트가 들어가게 됩니다.  
+</textarea>
+```
+- 리액트에서는 state를 통해 태그의 value라는 attribute를 변경하여 텍스트를 표시함.
+```jsx
+function RequestForm(props) {
+    const [value, setValue] = useState('요청사항을 입력하세요.');
+    
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    };
+    
+    const handleSubmit = (event) => {
+        alert('입력한 요청사항 : ' + value);
+        event.preventDefault();
+    };
+    
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+                요청사항 : 
+                <textarea value={value} onChange={handleChange} />
+            </label>
+            <button type="submit">제출</button>
+        </form>
+    );
+}
+```
+##### select 태그
+- Select 태그로 textarea와 동일함.
+```html
+<select>
+    <option value="apple">사과</option>
+    <option value="banaba">바나나</option>
+    <option selected value="grape">포도</option>
+    <option value="watermelon">수박</option>
+</select>
+```
+```jsx
+function FruitSelect(props) {
+    const [value, setValue] = useState('grape');
+    
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    };
+    
+    const handleSubmit = (event) => {
+        alert('선택한 과일 : ' + value);
+        event.preventDefault();
+    };
+    
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+                과일을 선택하세요 : 
+                <select value={value} onChange={handleChange}>
+                    <option value="apple">사과</option>
+                    <option value="banana">바나나</option>
+                    <option value="grape">포도</option>
+                    <option value="watermelon">수박</option>
+                </select>
+            </label>
+            <button type="submit">제출</button>
+        </form>
+    );
+}
+```
+##### File input 태그
+- File input 태그는 그 값이 읽기 전용이기 때문에 리액트에서는 비제어 컴포넌트가 됨.
+```html
+<input type="file" />
+```
+
+##### 여러 개의 입력 다루기
+- File input 태그는 그 값이 읽기 전용이기 때문에 리액트에서는 비제어 컴포넌트가 됨.
+```jsx
+function Reservation(props) {
+    const [haveBreakfast, setHaveBreakfast] = useState(true);
+    const [numberOfGuest, setNumberOfGuest] = useState(2);
+    
+    const handleSubmit = (event) => {
+        alert(`아침식사 여부 : ${haveBreakfast}, 방문객 수 : ${numberOfGuest}`);
+        event.preventDefault();
+    };
+    
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+                아침식사 여부 : 
+                <input type="checkbox"
+                       checked={haveBreakfast}
+                       onChange={(event) => {
+                           setHaveBreakfast(event.target.checked);
+                       }} />
+            </label>
+            <br/>
+            <label>
+                방문객 수 : 
+                <input type="number"
+                       value={numberOfGuest}
+                       onChange={(event) => {
+                           setNumberOfGuest(event.target.value);
+                       }} />
+            </label>
+            <button type="submit">제출</button>
+        </form>
+    );
+}
+```
+
+##### Input Null Value
+- 제어 컴포넌트에 value prop을 정해진 값으로 넣으면 코드를 수정하지 않는 한 입력값을 바꿀 수 없음.
+- 만약 value prop은 넣되 자유롭게 입력할 수 있게 만들고 싶다면 값이 undefined 또는 null을 넣어주면 됨.
+```jsx
+ReactDOM.render(<input value="hi" />, rootNode);
+
+setTimeout(function() {
+    ReactDOM.render(<input value={null} />, rootNode);
+}, 1000);
+```
+
+##### Shared State
+- shared state는 말 그대로 공유된 state를 의미함.
+- 자식 컴포넌트들이 가장 가까운 공통된 부모 컴포넌트의 state를 공유해서 사용함.
+- shared state는 어떤 컴포넌트의 state에 있는 데이터를 여러 개의 하위 컴포넌트에서 공통적으로 사용하는 경우.
+> 세 개의 컴포넌트 중 A컴포넌트{value: 2}가 부모 컴포넌트고 AA컴포넌트{value: 4}와 AB컴포넌트{value: 6}가 자식 컴포넌트일 때, 부모 컴포넌트는 값을 가지고 있다.  
+> AA컴포넌트는 값에 2를 곱해서 표시하는 컴포넌트고 AB컴포넌트는 값에 3을 곱해서 표시하는 컴포넌트다.  
+> 이러한 경우에 자식 컴포넌트들이 각각 값을 갖고 있을 필요는 없다.  
+> 부모 컴포넌트의 state에 있는 값에 각각 2와 3을 곱해서 표시해 주면 되기 때문이다.  
+
+물의 끓을 여부를 알려주는 컴포넌트
+```jsx
+function BoilingVerdict(props) {
+    if (props.celsius >= 100) {
+        return <p>물이 끓습니다.</p>;
+    }
+    
+    return <p>물이 끓지 않습니다.</p>;
+}
+```
+
+```jsx
+function Calculator(props) {
+    const [temperature, setTemperature] = useState('');
+
+    const handleChange = (event) => {
+        setTemperature(event.target.value);
+    };
+
+    return (
+        <fieldset>
+            <legend>섭씨 온도를 입력하세요</legend>
+            <input value={temperature}
+                   onChange={handleChange}/>
+            <BoilingVerdict celsius={parseFloat(temperature)} />
+        </fieldset>
+    )
+}
+```
+```jsx
+const scaleNames = {
+    c: '섭씨',
+    f: '화씨'
+};
+
+function TemperatureInput(props) {
+    const [temperature, setTemperature] = useState('');
+    
+    const handleChange = (event) => {
+        setTemperature(event.target.value);
+    };
+    
+    return (
+        <fieldset>
+            <legend>온도를 입력해 주세요(단위 : {scaleNames[props.scale]}) : </legend>
+            <input value={temperature} onChange={handleChange} />
+        </fieldset>
+    )
+}
+```
+
+```jsx
+function Calculator(props) {
+    return (
+        <div>
+            <TemperatureInput scale="c" />
+            <TemperatureInput scale="f" />
+        </div>
+    );
+}
+```
+
+온도 변환
+```jsx
+function toCelsius(fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius) {
+    return (celsius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convert) {
+    const input = parseFloat(temperature);
+
+    if (Number.isNaN(input)) {
+        return '';
+    }
+    
+    const output = convert(input);
+    const rounded = Math.round(output * 1000) / 1000;
+    
+    return rounded.toString();
+}
+```
+##### Shared State 적용하기
+- 하위 컴포넌트의 state를 공통된 부모 컴포넌트로 올려서 shared state를 적용해야 함.
+- state를 상위 컴포넌트로 올린다는 것을 State 끌어올리기(Lifting State Up)라고 표현함.
+```jsx
+return (
+    ...
+        // 변경 전 : <input value={temperature} onChange={handleChange} />
+        <input value={props.temperature} onChange={handleChange} />
+    ...
+)
+```
 
 ### 실습
+#### AttendanceBook
+```jsx
+import React from "react";
 
+const students = [
+    {
+        id: 1,
+        name: "Inje",
+    },
+    {
+        id: 2,
+        name: "Steve",
+    },
+    {
+        id: 3,
+        name: "Bill",
+    },
+    {
+        id: 4,
+        name: "Jeff",
+    },
+];
 
+function AttendanceBook(props) {
+    return (
+        <ul>
+            {students.map((student) => {
+                return <li key = {student.id}>{student.name}</li>;
+            })}
+        </ul>
+    );
+}
+
+export default AttendanceBook;
+```
+
+#### SignUp
+```jsx
+import React, { useState } from "react";
+
+function SignUp(props) {
+    const [name, setName] = useState("");
+
+    const handleChangeName = (event) => {
+        setName(event.target.value);
+    };
+
+    const handleSubmit = (event) => {
+        alert(`이름 : ${name}`);
+        event.preventDefault();
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+                이름 :
+                <input type="text" value={name} onChange={handleChangeName} />
+            </label>
+            <button type="submit">제출</button>
+        </form>
+    )
+}
+
+export default SignUp;
+```
 
 ---
 

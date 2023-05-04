@@ -23,7 +23,7 @@ function AttendanceBook(props) {
     return (
         <ul>
             {students.map((student) => {
-                return <li>key = {student.id}, {student.name}</li>;
+                return <li key = {student.id}>{student.name}</li>;
             })}
         </ul>
     );
