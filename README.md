@@ -16,6 +16,85 @@
 
 ---
 
+## 10주차
+### 2023.05.04 목요일
+### 강의
+##### 리스트와 키란 무엇인가?
+- 리스트는 자바스크립트의 변수나 객체를 하나의 변수로 묶어 놓은 배열과 같은 것.
+- 키는 각 객체나 아이템을 구분할 수 있는 고유한 값을 의미함.
+- 리액트에서는 배열과 키를 사용하는 반복되는 다수의 엘리먼트를 쉽게 렌더링 할 수 있음.
+
+##### 여러 개의 컴포넌트 렌더링하기
+> ┌───┬───┬───┬───┐  
+│&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│&nbsp;&nbsp; A &nbsp;&nbsp;│  
+└───┴───┴───┴───┘  
+┌───────┬───────┐  
+│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; B &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   B   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│  
+└───────┴───────┘
+- 위처럼 같은 컴포넌트를 화면에 반복적으로 나타내야 할 경우 배열에 들어있는 엘리먼트를 map() 함수를 이용하여 렌더링함.
+- 다음은 numbers 배열이 들어있는 각각의 요소를 map()을 이용하여 하나씩 추출하여, 2를 곱한 후 doubled라는 배열에 다시 넣는 코드.
+```jsx
+const doubled = numbers.map((number) => number * 2);
+```
+- 다음은 리액트에서 map() 함수를 사용한 예제.
+```jsx
+const numbers = [1, 2, 3, 4, 5];
+const listItems = numbers.map((number) =>
+    <li>{number}</li>
+);
+```
+- 이 코드는 numbers의 요소에 2를 곱하는 대신 \<li> 태그를 결합해서 리턴함.
+- 리턴된 listItems는 \<ul> 태그와 결합하여 렌더링 됨.
+> - 1
+> - 2
+> - 3
+> - 4
+> - 5
+```jsx
+ReactDom.render(
+    <ul>
+        <li>{1}</li>
+        <li>{2}</li>
+        <li>{3}</li>
+        <li>{4}</li>
+        <li>{5}</li>
+    </ul>,
+    document.getElementById('root')
+)
+```
+- 앞서 작성한 코드를 별도의 컴포넌트로 분리하면 다음과 같음.
+- 이 컴포넌트는 props로 받은 숫자를 numbers로 받아 리스트로 렌더링 해줌.
+```jsx
+function NumberList(props) {
+    const { numbers } = props;
+    
+    const listItems = numbers.map((number) => 
+        <li>{number}</li>
+    );
+}
+
+const numbers = [1, 2, 3, 4, 5];
+ReactDOM.render(
+    <NumberList numbers={numbers} />,
+    document.getElementById('root')
+);
+```
+- 이 코드를 실행하면 "리스트 아이템에 무조건 키가 있어야 한다"는 경고 문구가 나옴.
+- 경고 문구가 나오는 이유는 각각의 아이템에 key props가 없기 때문.
+
+##### 리스트의 키에 대해 알아보기
+- 리스트에서의 키는 "리스트에서 아이템을 구별하기 위한 고유한 문자열"임.
+- 이 키는 리스트에서 어떤 아이템이 변경, 추가 또는 제거되었는지 구분하기 위해 사용함.
+- 키는 같은 리스트에 있는 엘리먼트 사이에서만 고유한 값이면 됨.
+
+##### 
+
+### 실습
+
+
+
+---
+
 ## 9주차
 ### 2023.04.27 목요일
 ### 강의
