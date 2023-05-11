@@ -5,15 +5,120 @@
 
 ### 강의 목록
 ###### ※ 본 강의 목록은 *내림차순*으로 정렬되어있음.
-1. [10주차](#10주차)
-2. [9주차](#9주차)
-3. [7주차](#7주차)
-4. [6주차](#6주차)
-5. [5주차](#5주차)
-6. [4주차](#4주차)
-7. [3주차](#3주차)
-8. [2주차](#2주차)
-9. [1주차](#1주차)
+1. [11주차](#11주차)
+2. [10주차](#10주차)
+3. [9주차](#9주차)
+4. [7주차](#7주차)
+5. [6주차](#6주차)
+6. [5주차](#5주차)
+7. [4주차](#4주차)
+8. [3주차](#3주차)
+9. [2주차](#2주차)
+10. [1주차](#1주차)
+
+---
+
+## 11주차
+### 2023.05.11 목요일
+### 강의
+
+
+### 실습
+#### TemperatureInput
+```jsx
+const scaleNames = {
+    c: "섭씨",
+    f: "화씨",
+};
+
+function TemperatureInput(props) {
+    const handleChange = (event) => {
+        props.onTemperatureChange(event.target.value);
+    };
+
+    return (
+        <fieldset>
+            <legend>
+                온도를 입력해주세요(단위 : {scaleNames[props.scale]}) :
+            </legend>
+            <input value={props.temperature} onChange={handleChange} />
+        </fieldset>
+    )
+}
+
+export default TemperatureInput;
+```
+
+#### Calculator
+```jsx
+import React, { useState } from "react";
+import TemperatureInput from "./TemperatureInput";
+
+function BoilingVerdict(props) {
+    if (props.celsius >= 100) {
+        return <p>물이 끓습니다.</p>;
+    }
+
+    return <p>물이 끓지 않습니다.</p>;
+}
+
+function toCelsius(fahrenheit) {
+    return ((fahrenheit - 32) * 5) / 9;
+}
+
+function toFahrenheit(celsius) {
+    return (celsius * 9) / 5 + 32;
+}
+
+function tryConvert(temperature, convert) {
+    const input = parseFloat(temperature);
+
+    if (Number.isNaN(input)) {
+        return "";
+    }
+    
+    const output = convert(input);
+    const rounded = Math.round(output * 1000) / 1000;
+
+    return rounded.toString();
+}
+
+function Calculator(props) {
+    const [temperature, setTemperature] = useState("");
+    const [scale, setScale] = useState("c");
+    
+    const handleCelsiusChange = (temperature) => {
+        setTemperature(temperature);
+        setScale("c");
+    };
+    
+    const handleFahrenheitChange = (temperature) => {
+        setTemperature(temperature);
+        setScale("f");
+    };
+    
+    const celsius = scale === "f" ? tryConvert(temperature, toCelsius) : temperature;
+    const fahrenheit = scale === "c" ? tryConvert(temperature, toFahrenheit) : temperature;
+
+    return (
+        <div>
+            <TemperatureInput
+                scale="c"
+                temperature={celsius}
+                onTemperatureChange={handleCelsiusChange}
+            />
+            <TemperatureInput
+                scale="f"
+                temperature={fahrenheit}
+                onTemperatureInput={handleFahrenheitChange}
+            />
+            <BoilingVerdict celsius={parseFloat(celsius)} />
+        </div>
+    );
+}
+
+export default Calculator;
+```
 
 ---
 

@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-import SignUp from "./week10/SignUp";
+import Calculator from "./week11/Calculator";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <SignUp />
+      <Calculator />
   </React.StrictMode>
 );
 
