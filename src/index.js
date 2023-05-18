@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-import Calculator from "./week11/Calculator";
+import ProfileCard from "./week12/ProfileCard";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <Calculator />
+      <ProfileCard />
   </React.StrictMode>
 );
 
