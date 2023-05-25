@@ -8,17 +8,159 @@
 
 ###### ※ 본 강의 목록은 *내림차순*으로 정렬되어있음.
 
-1. [12주차](#12주차)
-2. [11주차](#11주차)
-3. [10주차](#10주차)
-4. [9주차](#9주차)
-5. [7주차](#7주차)
-6. [6주차](#6주차)
-7. [5주차](#5주차)
-8. [4주차](#4주차)
-9. [3주차](#3주차)
-10. [2주차](#2주차)
-11. [1주차](#1주차)
+1. [13주차](#13주차)
+2. [12주차](#12주차)
+3. [11주차](#11주차)
+4. [10주차](#10주차)
+5. [9주차](#9주차)
+6. [7주차](#7주차)
+7. [6주차](#6주차)
+8. [5주차](#5주차)
+9. [4주차](#4주차)
+10. [3주차](#3주차)
+11. [2주차](#2주차)
+12. [1주차](#1주차)
+
+---
+
+## 13주차
+
+### 2023.05.25 목요일
+
+### 강의
+
+##### 여러 개의 컨텍스트 사용하기
+
+- 여러 개의 컨텍스트를 동시에 사용하려면 Context.Provider를 중첩해서 사용함.
+- 예제 코드는 393~394page에 있음.
+- 예제에서는 ThemeContext와 UserContext를 중첩해서 사용하고 있음.
+- 이런 방법으로 여러 개의 컨텍스트를 동시에 사용할 수 있음.
+- 하지만 두 개 또는 그 이상의 컨텍스트 값이 자주 함께 사용될 경우 모든 값을 한 번에 제공해주는 별도의 render prop 컴포넌트를 직접 만드는것을 고려하는 것이 좋음.
+
+```jsx
+// 테마를 위한 컨텍스트
+const ThemeContext = React.createContext("light");
+
+// 로그인 한 사용자를 위한 컨텍스트
+const UserContext = React.createContext({
+  name: "Guest",
+});
+
+class App extends React.Component {
+  render() {
+    const { signedInUser, theme } = this.props;
+
+    return (
+      <ThemeContext.Provider value={theme}>
+        <UserContext.Provider value={signedInUser}>
+          <Layout />
+        </UserContext.Provider>
+      </ThemeContext.Provider>
+    );
+  }
+}
+```
+
+##### useContext
+
+- 함수형 컴포넌트에서 컨텍스트를 사용하기 위해 컴포넌트를 매번 Consumer 컴포넌트로 감싸주는 것보다 더 좋은 Hook이 있음.
+- useContext() 훅은 React.createContext() 함수 호출로 생성된 컨텍스트 객체를 인자로 받아서 현재 컨텍스트의 값을 리턴함.
+
+```jsx
+function MyComponent(props) {
+  const value = useContext(MyContext);
+
+  return (
+    ...
+  )
+}
+```
+
+- 이 방법도 가장 가까운 상위 Provider로 부터 컨텍스트의 값을 받아옴.
+- 만일 값이 변경되면 useContext() 훅을 사용하는 컴포넌트가 재 렌더링 됨.
+- 또한 useContext() 훅을 사용할 때에는 파라미터로 컨텍스트 객체를 넣어줘야 한다는 것을 기억해야함.
+
+```jsx
+// 올바른 사용법
+useContext(MyContext);
+
+// 잘못된 사용법
+useContext(MyContext.Consumer);
+useContext(MyContext.Provider);
+```
+
+※ Provider.value에서 주의해야 할 사항
+
+- 컨텍스트는 재렌더링 여부를 경정할 때 레어런스 정보를 사용하기 때문에 Provider의 부모 컴포넌트가 재렌더링 되었을 경우, 의도치 않게 consumer 컴포넌트의 재렌더링이 일어날 수 있음.
+
+### 실습
+
+#### DarkOrLight
+
+```jsx
+import { useState, useCallback } from "react";
+import ThemeContext from "./ThemeContext";
+import MainContent from "./MainContent";
+
+function DarkOrLight() {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = useCallback(() => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else if (theme === "dark") {
+      setTheme("light");
+    }
+  }, [theme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <MainContent />
+    </ThemeContext.Provider>
+  );
+}
+
+export default DarkOrLight;
+```
+
+#### ThemeContext
+
+```jsx
+import React from "react";
+
+const ThemeContext = React.createContext();
+ThemeContext.displayName = "ThemeContext";
+
+export default ThemeContext;
+```
+
+#### MainContent
+
+```jsx
+import { useContext } from "react";
+import ThemeContext from "./ThemeContext";
+
+function MainContent() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  return (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        padding: "1.5rem",
+        backgroundColor: theme === "light" ? "white" : "black",
+        color: theme === "light" ? "black" : "white",
+      }}
+    >
+      <p>안녕하세요, 테마 변경이 가능한 웹사이트 입니다.</p>
+      <button onClick={toggleTheme}>테마 변경</button>
+    </div>
+  );
+}
+
+export default MainContent;
+```
 
 ---
 
@@ -30,7 +172,7 @@
 
 ##### 합성에 대해 알아보기
 
-- 합성(Conposition)은 '여러 개의 컴포넌트를 합쳐서 새로운 컴포넌트를 만드는 것'.
+- 합성(Composition)은 '여러 개의 컴포넌트를 합쳐서 새로운 컴포넌트를 만드는 것'.
 - 조합 방법에 따라 합성의 사용 기법은 다음과 같이 나눌 수 있음.
 
 ##### 1. Containment (담다, 포함하다, 격리하다)
@@ -389,14 +531,14 @@ function App(props) {
 아래 코드는 수정한 이후의 모습임.
 
 ```jsx
-funtion App(props) {
-    const [value, setValue] = useState({ something: 'something' });
+function App(props) {
+  const [value, setValue] = useState({ something: "something" });
 
-    return (
-        <MyContext.Provider value={value}>
-          <Toolbar />
-        </MyContext.Provider>
-    );
+  return (
+    <MyContext.Provider value={value}>
+      <Toolbar />
+    </MyContext.Provider>
+  );
 }
 ```
 
@@ -429,10 +571,10 @@ const MyContext = React.createContext(/* some value */);
 MyContext.displayName = 'MyDisplayName';
 
 // 개발자 도구에 "MyDisplayName.Provider"로 표시됨
-<MyContext.Provider>
+<MyContext.Provider />
 
 // 개발자 도구에 "MyDisplayName.Consumer"로 표시됨
-<MyContext.Consumer>
+<MyContext.Consumer />
 ```
 
 ### 실습
